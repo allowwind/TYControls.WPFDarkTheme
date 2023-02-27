@@ -1,0 +1,487 @@
+﻿<UserControl
+    x:Class="TYControls.TYDateTimeView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:my="clr-namespace:TYControls"
+    Background="{StaticResource PopupBackground}"
+    Loaded="UserControl_Loaded"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="CalendarCalendarButtonStyle1" TargetType="{x:Type CalendarButton}">
+            <Setter Property="Background" Value="#FFBADDE9" />
+            <Setter Property="MinWidth" Value="40" />
+            <Setter Property="MinHeight" Value="42" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CalendarButton}">
+                        <Grid>
+                            <Rectangle
+                                x:Name="SelectedBackground"
+                                Fill="{TemplateBinding Background}"
+                                Opacity="0"
+                                RadiusX="1"
+                                RadiusY="1" />
+                            <Rectangle
+                                x:Name="Background"
+                                Fill="{TemplateBinding Background}"
+                                Opacity="0"
+                                RadiusX="1"
+                                RadiusY="1" />
+                            <ContentPresenter
+                                x:Name="NormalText"
+                                Margin="1,0,1,1"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                TextElement.Foreground="#FF333333" />
+                            <Rectangle
+                                x:Name="CalendarButtonFocusVisual"
+                                IsHitTestVisible="false"
+                                RadiusX="1"
+                                RadiusY="1"
+                                Stroke="#FF45D6FA"
+                                Visibility="Collapsed" />
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0:0:0.1" />
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="Background"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To=".5"
+                                                Duration="0" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="Background"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To=".5"
+                                                Duration="0" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0" />
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="Unselected" />
+                                    <VisualState x:Name="Selected">
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="SelectedBackground"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To=".75"
+                                                Duration="0" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ActiveStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0" />
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="Active" />
+                                    <VisualState x:Name="Inactive">
+                                        <Storyboard>
+                                            <ColorAnimation
+                                                Storyboard.TargetName="NormalText"
+                                                Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"
+                                                To="#FF777777"
+                                                Duration="0" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CalendarButtonFocusStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0" />
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="CalendarButtonFocused">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames
+                                                Storyboard.TargetName="CalendarButtonFocusVisual"
+                                                Storyboard.TargetProperty="Visibility"
+                                                Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Visibility>Visible</Visibility>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="CalendarButtonUnfocused">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames
+                                                Storyboard.TargetName="CalendarButtonFocusVisual"
+                                                Storyboard.TargetProperty="Visibility"
+                                                Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Visibility>Collapsed</Visibility>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="CalendarButtonFocusVisual" Property="Visibility" Value="Visible" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CalendarCalendarDayButtonStyle1" TargetType="{x:Type CalendarDayButton}">
+            <Setter Property="MinWidth" Value="5" />
+            <Setter Property="MinHeight" Value="5" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CalendarDayButton}">
+                        <Grid>
+                            <Rectangle
+                                x:Name="TodayBackground"
+                                Fill="#FFAAAAAA"
+                                Opacity="0"
+                                RadiusX="1"
+                                RadiusY="1" />
+                            <Rectangle
+                                x:Name="SelectedBackground"
+                                Fill="#FFBADDE9"
+                                Opacity="0"
+                                RadiusX="1"
+                                RadiusY="1" />
+                            <Border
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}" />
+                            <Rectangle
+                                x:Name="HighlightBackground"
+                                Fill="#FFBADDE9"
+                                Opacity="0"
+                                RadiusX="1"
+                                RadiusY="1" />
+                            <ContentPresenter
+                                x:Name="NormalText"
+                                Margin="5,1,5,1"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                TextElement.Foreground="#FF333333" />
+                            <Path
+                                x:Name="Blackout"
+                                Margin="3"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Data="M8.1772461,11.029181 L10.433105,11.029181 L11.700684,12.801641 L12.973633,11.029181 L15.191895,11.029181 L12.844727,13.999395 L15.21875,17.060919 L12.962891,17.060919 L11.673828,15.256231 L10.352539,17.060919 L8.1396484,17.060919 L10.519043,14.042364 z"
+                                Fill="#FF000000"
+                                Opacity="0"
+                                RenderTransformOrigin="0.5,0.5"
+                                Stretch="Fill" />
+                            <Rectangle
+                                x:Name="DayButtonFocusVisual"
+                                IsHitTestVisible="false"
+                                RadiusX="1"
+                                RadiusY="1"
+                                Stroke="#FF45D6FA"
+                                Visibility="Collapsed" />
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0:0:0.1" />
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="Normal" />
+                                    <VisualState x:Name="MouseOver">
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="HighlightBackground"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="0.5"
+                                                Duration="0" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="HighlightBackground"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="0.5"
+                                                Duration="0" />
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="HighlightBackground"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="0"
+                                                Duration="0" />
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="NormalText"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To=".35"
+                                                Duration="0" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="SelectionStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0" />
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="Unselected" />
+                                    <VisualState x:Name="Selected">
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="SelectedBackground"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To=".75"
+                                                Duration="0" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="CalendarButtonFocusStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0" />
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="CalendarButtonFocused">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames
+                                                Storyboard.TargetName="DayButtonFocusVisual"
+                                                Storyboard.TargetProperty="Visibility"
+                                                Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Visibility>Visible</Visibility>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="CalendarButtonUnfocused">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames
+                                                Storyboard.TargetName="DayButtonFocusVisual"
+                                                Storyboard.TargetProperty="Visibility"
+                                                Duration="0">
+                                                <DiscreteObjectKeyFrame KeyTime="0">
+                                                    <DiscreteObjectKeyFrame.Value>
+                                                        <Visibility>Collapsed</Visibility>
+                                                    </DiscreteObjectKeyFrame.Value>
+                                                </DiscreteObjectKeyFrame>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="ActiveStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0" />
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="Active" />
+                                    <VisualState x:Name="Inactive">
+                                        <Storyboard>
+                                            <ColorAnimation
+                                                Storyboard.TargetName="NormalText"
+                                                Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"
+                                                To="#FF777777"
+                                                Duration="0" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="DayStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0" />
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="RegularDay" />
+                                    <VisualState x:Name="Today">
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="TodayBackground"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To="1"
+                                                Duration="0" />
+                                            <ColorAnimation
+                                                Storyboard.TargetName="NormalText"
+                                                Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)"
+                                                To="#FFFFFFFF"
+                                                Duration="0" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                                <VisualStateGroup x:Name="BlackoutDayStates">
+                                    <VisualStateGroup.Transitions>
+                                        <VisualTransition GeneratedDuration="0" />
+                                    </VisualStateGroup.Transitions>
+                                    <VisualState x:Name="NormalDay" />
+                                    <VisualState x:Name="BlackoutDay">
+                                        <Storyboard>
+                                            <DoubleAnimation
+                                                Storyboard.TargetName="Blackout"
+                                                Storyboard.TargetProperty="Opacity"
+                                                To=".2"
+                                                Duration="0" />
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" VerticalAlignment="Center">
+                <TextBlock
+                    x:Name="tbTitle"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Foreground="White"
+                    Text="日期时间" />
+
+                <Button
+                    x:Name="iBtnCloseView"
+                    Width="18"
+                    Height="18"
+                    Margin="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Click="iBtnCloseView_Click"
+                    Content="X" />
+            </Grid>
+
+            <Grid Grid.Row="1" Background="Red">
+                <Calendar
+                    Name="calDate"
+                    CalendarButtonStyle="{DynamicResource CalendarCalendarButtonStyle1}"
+                    CalendarDayButtonStyle="{DynamicResource CalendarCalendarDayButtonStyle1}"
+                    CalendarItemStyle="{StaticResource {x:Type CalendarItem}}"
+                    FontSize="14"
+                    IsTodayHighlighted="False"
+                    PreviewMouseUp="calDate_PreviewMouseUp" />
+            </Grid>
+
+            <Grid Grid.Row="2" Margin="0,2,0,0">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Border
+                        x:Name="TDateTime2"
+                        Padding="5"
+                        BorderBrush="#AAA6D4F8"
+                        BorderThickness="1">
+                        <StackPanel Orientation="Horizontal">
+
+                            <Button
+                                Name="btnhh"
+                                Margin="0,0,0,0"
+                                Padding="2"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Click="btnhh_Click"
+                                Content="18" />
+
+                            <TextBlock
+                                Name="textBlockh"
+                                Padding="2"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text=":" />
+
+                            <Button
+                                Name="btnmm"
+                                Padding="2"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Click="btnmm_Click"
+                                Content="18" />
+
+                            <TextBlock
+                                Name="textBlockm"
+                                Height="18"
+                                Margin="2,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text=":" />
+
+                            <Button
+                                Name="btnss"
+                                Margin="2,0,0,0"
+                                Padding="2"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Click="btnss_Click"
+                                Content="20" />
+                        </StackPanel>
+                    </Border>
+
+
+
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button
+                        Name="btnNow"
+                        Margin="2,0,0,0"
+                        Padding="5,2"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Click="btnNow_Click"
+                        Content="当前" />
+
+                    <Button
+                        Name="btnOK"
+                        Margin="2,0,0,0"
+                        Padding="5,2"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Click="btnOK_Click"
+                        Content="确定" />
+                </StackPanel>
+            </Grid>
+
+
+        </Grid>
+        <Grid
+            x:Name="girdChioce"
+            VerticalAlignment="Top"
+            Background="Transparent">
+            <Popup
+                x:Name="popChioce"
+                AllowsTransparency="True"
+                IsOpen="False"
+                Placement="Center"
+                PlacementTarget="{Binding ElementName=calDate}"
+                PopupAnimation="Fade"
+                StaysOpen="False" />
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1,0 +1,77 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ty="clr-namespace:TYControls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="pack://application:,,,/TYControls;component/Styles/Busy.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/TYControls;component/Styles/Brush.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+
+    <ControlTemplate x:Key="WindowTemplateKey" TargetType="{x:Type ty:TYWindow}">
+        <Border
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid>
+                <AdornerDecorator>
+                    <Grid>
+                        <ContentPresenter />
+                        <ty:TYBusy
+                            Title="{TemplateBinding BusyTitle}"
+                            IsBusy="{TemplateBinding IsBusy}"
+                            Style="{StaticResource TYBusyStyle}" />
+                    </Grid>
+                </AdornerDecorator>
+                <ResizeGrip
+                    x:Name="WindowResizeGrip"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    IsTabStop="false"
+                    Visibility="Collapsed" />
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="ResizeMode" Value="CanResizeWithGrip" />
+                    <Condition Property="WindowState" Value="Normal" />
+                </MultiTrigger.Conditions>
+                <Setter TargetName="WindowResizeGrip" Property="Visibility" Value="Visible" />
+            </MultiTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <Style x:Key="TYWindowStyle" TargetType="{x:Type ty:TYWindow}">
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="Background" Value="{StaticResource WindowBackgroundBrush}" />
+        <Setter Property="BusyTitle" Value="请稍等" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ty:TYWindow}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <AdornerDecorator>
+                            <Grid>
+                                <ContentPresenter />
+                                <ty:TYBusy
+                                    Title="{TemplateBinding BusyTitle}"
+                                    AnimationTime="5"
+                                    IsBusy="{TemplateBinding IsBusy}"
+                                    Style="{StaticResource TYBusyStyle}" />
+                            </Grid>
+                        </AdornerDecorator>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="ResizeMode" Value="CanResizeWithGrip">
+                <Setter Property="Template" Value="{StaticResource WindowTemplateKey}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

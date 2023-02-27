@@ -1,0 +1,61 @@
+﻿<UserControl
+    x:Class="TYControls.TYHourView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:my="clr-namespace:TYControls"
+    d:DesignHeight="200"
+    d:DesignWidth="250"
+    Background="{StaticResource PopupBackground}"
+    Loaded="UserControl_Loaded"
+    mc:Ignorable="d">
+    <Border>
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+
+                <TextBlock
+                    x:Name="tbTitle"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="12"
+                    Text="小时" />
+
+                <Button
+                    x:Name="iBtnCloseView"
+                    Width="18"
+                    Height="18"
+                    Margin="5,2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Click="iBtnCloseView_Click"
+                    Content="X" />
+            </Grid>
+
+            <DataGrid
+                Name="dgHour"
+                Grid.Row="1"
+                AlternationCount="2"
+                AutoGenerateColumns="True"
+                CanUserAddRows="False"
+                ColumnWidth="30"
+                FontSize="11"
+                HeadersVisibility="Row"
+                IsReadOnly="True"
+                RowHeaderWidth="0"
+                RowHeight="30"
+                SelectedCellsChanged="dgHour_SelectedCellsChanged"
+                SelectionMode="Single"
+                SelectionUnit="Cell">
+                />
+            </DataGrid>
+        </Grid>
+    </Border>
+</UserControl>

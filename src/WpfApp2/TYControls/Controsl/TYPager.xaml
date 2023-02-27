@@ -1,0 +1,55 @@
+﻿<UserControl
+    x:Class="TYControls.TYPager"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TYControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ty="clr-namespace:TYControls"
+    d:DesignHeight="50"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <local:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter" />
+        <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid x:Name="GrdMain">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Button Margin="2" Content="前一页" />
+        <ItemsControl Grid.Column="1" ItemsSource="{Binding Path=PagerItems, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid Height="{Binding ActualHeight, ElementName=GrdMain}" MinWidth="{Binding ActualHeight, ElementName=GrdMain}">
+                        <TextBlock
+                            x:Name="TxtDot"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Text=". . ."
+                            Visibility="{Binding Value, Converter={StaticResource NullToVisibilityConverter}}" />
+                        <ToggleButton
+                            Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"
+                            Click="BtnClickIndex"
+                            Content="{Binding Value}"
+                            IsChecked="{Binding IsSelected}"
+                            Visibility="{Binding Value, Converter={StaticResource NotNullToVisibilityConverter}}" />
+                    </Grid>
+
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Button
+            Grid.Column="2"
+            Margin="2"
+            Content="下一页" />
+    </Grid>
+</UserControl>

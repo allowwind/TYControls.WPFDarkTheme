@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfApp2", "WpfApp2\WpfApp2.csproj", "{46B68E85-C5E7-473B-AD78-ECB4D2A18C93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TYControls", "TYControls\TYControls.csproj", "{8A817586-437D-4DDE-B909-4988F9EC401E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{46B68E85-C5E7-473B-AD78-ECB4D2A18C93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46B68E85-C5E7-473B-AD78-ECB4D2A18C93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46B68E85-C5E7-473B-AD78-ECB4D2A18C93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46B68E85-C5E7-473B-AD78-ECB4D2A18C93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A817586-437D-4DDE-B909-4988F9EC401E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A817586-437D-4DDE-B909-4988F9EC401E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A817586-437D-4DDE-B909-4988F9EC401E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A817586-437D-4DDE-B909-4988F9EC401E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BEB11635-A2D0-47F7-89ED-DF87FED643F4}
+	EndGlobalSection
+EndGlobal
